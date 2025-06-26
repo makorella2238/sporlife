@@ -36,7 +36,7 @@ export const Person = ({ show }: { show: boolean }) => {
               {rowPlayers.map((player, i) => (
                 <Parallelogram key={i}>
                   <PlayerImage src="/player.png" alt="Player" />
-                  <NameText>{player.player_fio}</NameText>
+                  <NameText>{player.player_fio.split(" ").join("\n")}</NameText>
                   <NumberBlock>{player.player_number}</NumberBlock>
                 </Parallelogram>
               ))}
@@ -138,6 +138,8 @@ const Parallelogram = styled.div`
 `;
 
 const PlayerImage = styled.img`
+  position: absolute;
+  left: -1.5px;
   margin-right: 2px;
   width: 101px;
   height: 61px;
@@ -147,13 +149,15 @@ const PlayerImage = styled.img`
 `;
 
 const NameText = styled.div`
-text-align: left;
+  flex: 1;
   font-size: 20px;
   line-height: 20px;
   color: #001134;
-  margin-right: auto;
   display: flex;
   align-items: center;
+  justify-content: flex-end; /* прижимаем к правому краю */
+  text-align: center;
+  white-space: pre-line;
 `;
 
 const NumberBlock = styled.div`
@@ -182,25 +186,29 @@ const RepresentativeParallelogram = styled.div`
   flex-direction: column;
   width: 280px;
   padding: 0;
+  overflow: hidden;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
 `;
 
-
 const RepName = styled.div`
-  text-align: center;
   white-space: pre-line;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end; /* прижимаем к правому краю */
   height: 100%;
+  text-align: left;
+  padding-right: 46px; /* немного отступа */
+  flex: 1;
 `;
 
+
 const ParallelogramRow = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   height: 61px;
   width: 280px;
   background: #008bb1;
-  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
   color: white;
   font-size: 20px;
   font-weight: 400;
@@ -208,8 +216,7 @@ const ParallelogramRow = styled.div`
 `;
 
 const RepPost = styled.div`
-  margin-right: -2px;
-  width: 263px;
+  width: 100%;
   height: 20px;
   background: white;
   color: #000533;
@@ -218,16 +225,15 @@ const RepPost = styled.div`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -2%;
-
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  clip-path: polygon(3.5% 0%, 100% 0%, 96.5% 100%, 0% 100%);
+  justify-content: start;
+  padding-left: 10px; /* убираем лишние отступы */
 `;
 
-
 const RepImage = styled.img`
+  position: absolute;
+  left: -7px;
   width: 101px;
   height: 61px;
   object-fit: cover;
