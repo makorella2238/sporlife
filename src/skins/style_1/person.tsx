@@ -1,0 +1,235 @@
+"use client";
+
+import styled from "styled-components";
+import { useMatch, useScenario, useScoreboard, useTimer } from "@/hooks";
+
+export const Person = ({ show }: { show: boolean }) => {
+  const match = useMatch();
+
+  const rows = [];
+  const players = match?.results_1 || [];
+
+  let i = 0;
+  let toggle = true;
+
+  while (i < players.length) {
+    const count = toggle ? 3 : 4;
+    rows.push(players.slice(i, i + count));
+    i += count;
+    toggle = !toggle;
+  }
+
+  return (
+    <Wrapper style={{ display: show ? "flex" : "none" }}>
+      <HeaderRow>
+        <Title>СОСТАВ</Title>
+        <Subtitle>
+          ЭКСПРЕСС <br /> ОФИС
+        </Subtitle>
+        <Logo src={match?.team_1?.img} alt="Logo" />
+      </HeaderRow>
+
+      <div>
+        <div>
+          {rows.map((rowPlayers, idx) => (
+            <Grid key={idx} columns={rowPlayers.length}>
+              {rowPlayers.map((player, i) => (
+                <Parallelogram key={i}>
+                  <PlayerImage src="/player.png" alt="Player" />
+                  <NameText>{player.player_fio}</NameText>
+                  <NumberBlock>{player.player_number}</NumberBlock>
+                </Parallelogram>
+              ))}
+            </Grid>
+          ))}
+        </div>
+
+        <BottomRow>
+          <RepresentativeParallelogram>
+            <ParallelogramRow>
+              <RepImage src="/player.png" alt="Player" />
+              <RepName>
+                {match.team_1.coaches[0].fio.replace(" ", "\n")}
+              </RepName>
+            </ParallelogramRow>
+            <RepPost>Представитель</RepPost>
+          </RepresentativeParallelogram>
+
+          <RepresentativeParallelogram>
+            <ParallelogramRow>
+              <RepImage src="/player.png" alt="Player" />
+              <RepName>
+                {match.team_1.coaches[0].fio.replace(" ", "\n")}
+              </RepName>
+            </ParallelogramRow>
+            <RepPost>Представитель</RepPost>
+          </RepresentativeParallelogram>
+        </BottomRow>
+      </div>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  margin-top: 50px;
+  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: url("/person.png") no-repeat center center / cover;
+  width: 1492px;
+  height: 809px;
+  font-family: "Furore", sans-serif;
+  color: white;
+  position: relative;
+`;
+
+const Title = styled.h1`
+  font-size: 142.15px;
+  font-weight: 400;
+  line-height: 177.69px;
+  letter-spacing: -2%;
+  color: white;
+  margin-right: 27px;
+`;
+
+const Subtitle = styled.h2`
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -2%;
+  margin: 0;
+`;
+
+const HeaderRow = styled.div`
+  margin-top: 64px;
+  margin-bottom: 44px;
+  height: 155px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Logo = styled.img`
+  margin-top: 14px;
+  width: 155px;
+  height: 155px;
+`;
+
+const Grid = styled.div<{ columns: number }>`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(${(props) => props.columns}, auto);
+  grid-auto-rows: 80px;
+  justify-content: center;
+`;
+
+const Parallelogram = styled.div`
+  position: relative;
+  width: 347px;
+  height: 61px;
+  background: white;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  justify-content: space-between;
+`;
+
+const PlayerImage = styled.img`
+  margin-right: 2px;
+  width: 101px;
+  height: 61px;
+  object-fit: cover;
+  flex-shrink: 0;
+  clip-path: polygon(10px 0%, 100% 0%, 90% 100%, 0% 100%);
+`;
+
+const NameText = styled.div`
+text-align: left;
+  font-size: 20px;
+  line-height: 20px;
+  color: #001134;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+`;
+
+const NumberBlock = styled.div`
+  width: 111px;
+  height: 61px;
+  background: #008bb1;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(40px 0%, 100% 0%, 90% 100%, 0% 100%);
+  flex-shrink: 0;
+`;
+
+const BottomRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 20px; /* Добавлено для отступа сверху */
+`;
+
+const RepresentativeParallelogram = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  padding: 0;
+`;
+
+
+const RepName = styled.div`
+  text-align: center;
+  white-space: pre-line;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const ParallelogramRow = styled.div`
+  display: flex;
+  align-items: center;
+  height: 61px;
+  width: 280px;
+  background: #008bb1;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Furore", sans-serif;
+`;
+
+const RepPost = styled.div`
+  margin-right: -2px;
+  width: 263px;
+  height: 20px;
+  background: white;
+  color: #000533;
+  font-family: "Furore", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -2%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  clip-path: polygon(3.5% 0%, 100% 0%, 96.5% 100%, 0% 100%);
+`;
+
+
+const RepImage = styled.img`
+  width: 101px;
+  height: 61px;
+  object-fit: cover;
+  flex-shrink: 0;
+`;
