@@ -11,7 +11,7 @@ import styled from 'styled-components';
 export const HomeRoster = ({ show }: { show: boolean }) => {
   return (
     <div style={{position: 'absolute', top: 0, left: 0, backgroundColor: 'red', display: show ? 'block' : 'none'}}>
-      <h1>Home Roster. Style 2</h1>
+      <h1>Home Roster. Style 1</h1>
     </div>
   );
 };

@@ -1,39 +1,42 @@
 "use client";
 
-import { useMatch} from "@/hooks";
+import { useMatch } from "@/hooks";
 import styled from "styled-components";
 export const Mid = ({ show }: { show: boolean }) => {
   const match = useMatch();
+  const titleWords = match?.tournament?.full_name?.split(" ") || [];
+  const line1 = titleWords.slice(0, 2).join(" ");
+  const line2 = titleWords.slice(2, 4).join(" ");
 
   return (
-    <Wrapper style={{ display: show ? 'flex' : 'none' }}>
+    <Wrapper style={{ display: show ? "flex" : "none" }}>
       <BackgroundImage />
       <TitleContainer>
-        <TitleLine>ФИНАЛЬНЫЙ ДЕНЬ</TitleLine>
-        <TitleLine>ЛЕТНЕГО КУБКА</TitleLine>
+        <TitleLine>{line1}</TitleLine>
+        <TitleLine>{line2}</TitleLine>
       </TitleContainer>
 
       <TeamsContainer>
         <TourBlock variant="normal">
-          <TourText>СК ТУЛГУ</TourText>
+          <TourText>{match?.stadium?.name}</TourText>
         </TourBlock>
         <TourBlock variant="inverted">
-          <TourText>1 ТУР</TourText>
+          <TourText>{match?.circle}</TourText>
         </TourBlock>
       </TeamsContainer>
-      
+
       <TeamsRow>
+        <TeamLogo side="left" src={match?.team_1?.img} />
         <TeamBox side="left" style={{ marginRight: "250px" }}>
-          <TeamLogo side="left" src={match?.team_1?.img} />
           <TeamName side="left">{match?.team_1?.name}</TeamName>
           <TeamSlash side="left" />
         </TeamBox>
 
         <TeamBox side="right" style={{ marginLeft: "250px" }}>
           <TeamSlash side="right" />
-          <TeamLogo side="right" src={match?.team_2?.img} />
           <TeamName side="right">{match?.team_2?.name}</TeamName>
         </TeamBox>
+        <TeamLogo side="right" src={match?.team_2?.img} />
       </TeamsRow>
       <BottomInfo>
         <DateText>31.07.2025</DateText>
@@ -46,8 +49,8 @@ export const Mid = ({ show }: { show: boolean }) => {
 
 const Wrapper = styled.div`
   padding-top: 50px;
-  margin-top: 20px;
-  margin-left: 100px;
+  margin-top: 50px;
+  margin-left: 150px;
   position: relative;
   width: 1400px;
   height: 800px;
@@ -102,11 +105,12 @@ const TeamsContainer = styled.div`
 const TourBlock = styled.div<{ variant?: "normal" | "inverted" }>`
   position: relative;
   padding: 20px 50px;
-  background: #00063C;
-  border-top: 4px solid #29356A;
-  border-bottom: 4px solid #29356A;
+  background: #00063c;
+  border-top: 4px solid #29356a;
+  border-bottom: 4px solid #29356a;
   overflow: hidden;
-  transform: ${({ variant }) => (variant === "inverted" ? "skewX(-20deg)" : "skewX(20deg)")};
+  transform: ${({ variant }) =>
+    variant === "inverted" ? "skewX(-20deg)" : "skewX(20deg)"};
 
   &::before,
   &::after {
@@ -115,7 +119,7 @@ const TourBlock = styled.div<{ variant?: "normal" | "inverted" }>`
     top: 0;
     width: 8px;
     height: 100%;
-    background-color: #29356A;
+    background-color: #29356a;
     z-index: 1;
   }
 
@@ -129,11 +133,11 @@ const TourBlock = styled.div<{ variant?: "normal" | "inverted" }>`
 
   /* "отменяем" наклон внутри текста */
   > * {
-    transform: ${({ variant }) => (variant === "inverted" ? "skewX(20deg)" : "skewX(-20deg)")};
+    transform: ${({ variant }) =>
+      variant === "inverted" ? "skewX(20deg)" : "skewX(-20deg)"};
     display: inline-block;
   }
 `;
-
 
 const TourText = styled.div`
   font-size: 37px;
@@ -175,6 +179,7 @@ const GradientSlash = styled.div`
 `;
 
 const TeamsRow = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -188,23 +193,31 @@ const TeamsRow = styled.div`
 const TeamBox = styled.div<{ side: "left" | "right" }>`
   position: relative;
   display: flex;
+  flex-direction: ${(props) =>
+    props.side === "right" ? "row-reverse" : "row"};
+  align-items: center;
+  justify-content: flex-start;
+  padding: ${(props) => (props.side === "left" ? "0 30px 0 0" : "0 0 0 30px")};
+  margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
+  background: ${(props) =>
+    props.side === "left"
+      ? "linear-gradient(90deg, #008BB1 0%, #191919 100%)"
+      : "linear-gradient(90deg, #191919 0%, #FF0000 100%)"};
   height: 78px;
   width: 650px;
 
-  ${({ side }) =>
-    side === "left"
-      ? `
-        background: linear-gradient(90deg, #008BB1 0%, #191919 100%);
-        justify-content: flex-start;
-        padding-left: 100px;
-        
-      `
-      : `
-        background: linear-gradient(90deg, #191919 0%, #FF0000 100%);
-        justify-content: flex-end;
-        padding-right: 100px;
-        
-      `};
+  clip-path: ${(props) =>
+    props.side === "left"
+      ? "polygon(0 0, calc(100% - 19px) 0, 100% 100%, 0% 100%)"
+      : "polygon(19px 0, 100% 0, 100% 100%, 0 100%)"};
+
+  ${(props) =>
+    props.side === "left"
+      ? "transform: translateX(28px);"
+      : "transform: translateX(-28px);"}
+  z-index: 10;
+
+  overflow: visible;
 `;
 
 const TeamName = styled.div<{ side: "left" | "right" }>`
@@ -242,41 +255,26 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   width: 263px;
   height: 263px;
   object-fit: contain;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-
-  ${(props) =>
-    props.side === "left"
-      ? `
-        left: -70px;
-        filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.7));
-      `
-      : `
-        right: -70px;
-        filter: drop-shadow(-5px 5px 10px rgba(0, 0, 0, 0.7));
-      `}
+  left: ${(props) => (props.side === "left" ? "11%" : "auto")};
+  right: ${(props) => (props.side === "right" ? "13%" : "auto")};
+  top: ${(props) => (props.side === "right" ? "-50%" : "-106%")};
+  :45px ;
+  transform: translateY(50%);
+  z-index: 20;
 `;
 
 const TeamSlash = styled.div<{ side: "left" | "right" }>`
   position: absolute;
-  width: 5px;
-  height: 100%;
-  background: ${(props) => (props.side === "left" ? "#008BB1" : "#FF0000")};
   top: 0;
+  bottom: 0;
+  width: 20px;
+  background: ${(props) => (props.side === "left" ? "#008BB1" : "#FF0000")};
   z-index: 3;
+  transform: ${(props) =>
+    props.side === "left" ? "skewX(-167deg)" : "skewX(167deg)"};
 
   ${(props) =>
-    props.side === "left" &&
-    `
-    right: -10px;
-    transform: skewX(20deg);
-  `}
-
-  ${(props) =>
-    props.side === "right" &&
-    `
-    left: -10px;
-    transform: skewX(-20deg);
-  `}
+    props.side === "left"
+      ? `right: 0; transform-origin: right;`
+      : `left: 0; transform-origin: left;`}
 `;
