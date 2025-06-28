@@ -95,7 +95,7 @@ export const match: MatchData = {
   "circle": "1 тур",
   "stadium": {
     "id": "68190047af8426867ff2dd2d",
-    "name": "СК ТУЛГУ",
+    "name": "СК ТУЛГ",
     "img": "https://admin.sporlive.ru/static/images/ed31bd83b68549fd8fce5b0fcea3dfd3.jpg",
     "description": ""
   },
@@ -112,7 +112,7 @@ export const match: MatchData = {
     "teams": [
       {
         "id": "6696c7ec040190bdcc6d5aef",
-        "name": "Экспресс офис",
+        "name": "Экспресс офисывавыавыа",
         "img": "https://admin.sporlive.ru/static/images/d1a623bbbf09442bb6a01776df0d6d48.png",
         "description": "",
         "color": "#ff7b00"

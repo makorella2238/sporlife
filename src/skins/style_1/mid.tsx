@@ -1,12 +1,46 @@
 "use client";
 
 import { useMatch } from "@/hooks";
-import styled from "styled-components";
+import { RefObject, useEffect, useRef, useState } from "react";
+import styled, { keyframes } from "styled-components";
+
 export const Mid = ({ show }: { show: boolean }) => {
   const match = useMatch();
   const titleWords = match?.tournament?.full_name?.split(" ") || [];
   const line1 = titleWords.slice(0, 2).join(" ");
   const line2 = titleWords.slice(2, 4).join(" ");
+
+  const team1Ref = useRef<HTMLDivElement>(null);
+  const team2Ref = useRef<HTMLDivElement>(null);
+
+  const [team1SmallFont, setTeam1SmallFont] = useState(false);
+  const [team2SmallFont, setTeam2SmallFont] = useState(false);
+
+  function checkHeight(
+    ref: RefObject<HTMLDivElement | null>,
+    setter: (v: boolean) => void
+  ) {
+    if (!ref.current) return;
+
+    const observer = new ResizeObserver(() => {
+      const height = ref.current?.clientHeight ?? 0;
+      setter(height > 53);
+    });
+
+    observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }
+
+  useEffect(() => {
+    const disconnect1 = checkHeight(team1Ref, setTeam1SmallFont);
+    const disconnect2 = checkHeight(team2Ref, setTeam2SmallFont);
+
+    return () => {
+      disconnect1?.();
+      disconnect2?.();
+    };
+  }, [match?.team_1?.name, match?.team_2?.name]);
 
   return (
     <Wrapper style={{ display: show ? "flex" : "none" }}>
@@ -27,15 +61,21 @@ export const Mid = ({ show }: { show: boolean }) => {
 
       <TeamsRow>
         <TeamLogo side="left" src={match?.team_1?.img} />
+
         <TeamBox side="left" style={{ marginRight: "250px" }}>
-          <TeamName side="left">{match?.team_1?.name}</TeamName>
+          <TeamName side="left" ref={team1Ref} smallFont={team1SmallFont}>
+            {match?.team_1?.name}
+          </TeamName>
           <TeamSlash side="left" />
         </TeamBox>
 
         <TeamBox side="right" style={{ marginLeft: "250px" }}>
           <TeamSlash side="right" />
-          <TeamName side="right">{match?.team_2?.name}</TeamName>
+          <TeamName side="right" ref={team2Ref} smallFont={team2SmallFont}>
+            {match?.team_2?.name}
+          </TeamName>
         </TeamBox>
+
         <TeamLogo side="right" src={match?.team_2?.img} />
       </TeamsRow>
       <BottomInfo>
@@ -46,6 +86,17 @@ export const Mid = ({ show }: { show: boolean }) => {
     </Wrapper>
   );
 };
+
+const slideDown = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
 
 const Wrapper = styled.div`
   padding-top: 50px;
@@ -59,6 +110,7 @@ const Wrapper = styled.div`
   align-items: center;
   font-family: "Furore", sans-serif;
   overflow: hidden;
+  animation: ${slideDown} 0.5s ease forwards;
 `;
 
 const BackgroundImage = styled.div`
@@ -220,33 +272,38 @@ const TeamBox = styled.div<{ side: "left" | "right" }>`
   overflow: visible;
 `;
 
-const TeamName = styled.div<{ side: "left" | "right" }>`
-  height: 78px;
-  width: 570px;
+const TeamName = styled.div<{ side: "left" | "right"; smallFont?: boolean }>`
+  width: 100%; /* чтобы занимать всю ширину родителя */
+  max-width: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   font-family: "Furore", sans-serif;
   font-weight: 400;
-  font-size: 48px;
-  line-height: 37.33px;
+  font-size: ${(props) => (props.smallFont ? "37px" : "48px")};
+  line-height: ${(props) => (props.smallFont ? "1.2" : "1")};
+  height: ${(props) => (props.smallFont ? "85px" : "78px")};
   letter-spacing: -2%;
   text-transform: uppercase;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-height: none;
   z-index: 1;
 
   ${({ side }) =>
     side === "left"
       ? `
-        padding-left: 30px;
-        justify-content: flex-end; 
+        align-items: flex-end;
+        text-align: right;
+        padding-right: 40px;
       `
       : `
-        padding-right: 30px;
-        justify-content: flex-start;
+        align-items: flex-start;
+        text-align: left;
+        padding-left: 40px;
       `};
 `;
 

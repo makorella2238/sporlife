@@ -1,6 +1,7 @@
 "use client";
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
 import { useMatch, useScenario, useScoreboard, useTimer } from "@/hooks";
 
 export const Person = ({ show }: { show: boolean }) => {
@@ -70,6 +71,17 @@ export const Person = ({ show }: { show: boolean }) => {
   );
 };
 
+const slideDown = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
 const Wrapper = styled.div`
   margin-top: 50px;
   margin-left: 100px;
@@ -83,6 +95,7 @@ const Wrapper = styled.div`
   font-family: "Furore", sans-serif;
   color: white;
   position: relative;
+  animation: ${slideDown} 1s ease forwards;
 `;
 
 const Title = styled.h1`
@@ -200,7 +213,6 @@ const RepName = styled.div`
   padding-right: 46px; /* немного отступа */
   flex: 1;
 `;
-
 
 const ParallelogramRow = styled.div`
   position: relative;

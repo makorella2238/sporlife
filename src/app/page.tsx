@@ -1,7 +1,7 @@
 "use client";
 
+import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import { PersonKind, TableKind, person_Kind, person_kinds } from "@/models";
 import { PersonKindPage } from "../skins/style_1/person_kind";
 
@@ -99,6 +99,18 @@ export default function App() {
     </>
   );
 }
+
+const slideOutToRight = keyframes`
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+`;
+
 
 const Back = styled.div`
   position: fixed;

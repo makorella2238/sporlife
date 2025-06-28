@@ -1,7 +1,7 @@
 "use client";
 
 import { useMatch } from "@/hooks";
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const PersonKindPage = ({ person_kind }: { person_kind: any }) => {
   const match = useMatch();
@@ -30,6 +30,18 @@ export const PersonKindPage = ({ person_kind }: { person_kind: any }) => {
   );
 };
 
+const slideInFromLeft = keyframes`
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+
 const Row = styled.div`
   display: flex;
   margin-left: 30px;
@@ -37,7 +49,7 @@ const Row = styled.div`
 
 const Goal = styled.div`
   background: linear-gradient(90deg, #191919 23.68%, #008bb1 80.03%);
-  color: #FFFFFF;
+  color: #ffffff;
   width: 190px;
   height: 56px;
   position: absolute;
@@ -68,7 +80,9 @@ const TeamBoxWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: flex-start;
+  animation: ${slideInFromLeft} 0.6s ease-out forwards;
 `;
+
 
 const PersImage = styled.img`
   position: absolute;
@@ -129,8 +143,8 @@ const Col = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 2;
-  margin-right: 80px; 
-  align-items: flex-end; 
+  margin-right: 80px;
+  align-items: flex-end;
 `;
 
 const TeamName = styled.div<{ side: "left" | "right" }>`

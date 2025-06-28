@@ -1,7 +1,7 @@
 "use client";
 
-import styled from "styled-components";
 import { useMatch, useScoreboard, useScenario } from "@/hooks";
+import styled, { keyframes } from "styled-components";
 
 export const Big = ({ show }: { show: boolean }) => {
   const match = useMatch();
@@ -42,7 +42,21 @@ export const Big = ({ show }: { show: boolean }) => {
   );
 };
 
-// Подключаем шрифт Furore
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+export const SlideUpDiv = styled.div`
+  animation: ${slideUp} 0.5s ease forwards;
+`;
+
 const FuroreFont = styled.div`
   @font-face {
     font-family: "Furore";
@@ -58,8 +72,7 @@ const FuroreFont = styled.div`
 const Wrapper = styled.div`
   position: absolute;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,7 +80,8 @@ const Wrapper = styled.div`
   gap: 0;
   font-family: "Furore", sans-serif;
   z-index: 100;
-  width: 1500px; /* Увеличили ширину для полного отображения названий */
+  width: 1500px;
+  animation: ${slideUp} 0.5s ease forwards;
 `;
 
 const Row = styled.div`
@@ -89,10 +103,8 @@ const TeamBox = styled.div<{ side: "left" | "right" }>`
     props.side === "right" ? "row-reverse" : "row"};
   align-items: center;
   justify-content: flex-start;
-  padding: ${(props) =>
-     props.side === "left" ? "0 0 0 60px" : "0 60px 0 0"};
-  margin: ${(props) =>
-    props.side === "left" ? "0 0 0 5px" : "0 5px 0 0"}; 
+  padding: ${(props) => (props.side === "left" ? "0 0 0 60px" : "0 60px 0 0")};
+  margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
   background: ${(props) =>
     props.side === "left"
       ? "linear-gradient(90deg, #008BB1 0%, #191919 100%)"

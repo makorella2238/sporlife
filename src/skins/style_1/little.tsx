@@ -1,6 +1,6 @@
 "use client";
 
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 import { useMatch, useScoreboard, useScenario } from "@/hooks";
 
 export const Little = ({ show }: { show: boolean }) => {
@@ -54,6 +54,18 @@ export const Little = ({ show }: { show: boolean }) => {
   );
 };
 
+
+const slideDown = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
 // Подключаем шрифт Furore
 const FuroreFont = styled.div`
   @font-face {
@@ -80,6 +92,7 @@ const Wrapper = styled.div`
   z-index: 100;
   width: 638px;
   overflow: visible;
+   animation: ${slideDown} 0.5s ease forwards;
 `;
 const FollsContainer = styled.div`
   display: flex;
