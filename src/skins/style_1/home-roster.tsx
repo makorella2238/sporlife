@@ -156,11 +156,11 @@ const Wrapper = styled.div`
 
   background: linear-gradient(
     135deg,
-    rgba(14, 28, 88, 0.9) 0%,
+    rgba(14, 28, 88, 0.95) 0%,
     rgba(12, 10, 107, 0.95) 25%,
-    #00063C 50%,
+    rgba(0, 6, 60, 0.95) 50%,  /* заменил #00063C на rgba */
     rgba(4, 20, 87, 0.95) 75%,
-    rgba(4, 14, 58, 0.9) 100%
+    rgba(4, 14, 58, 0.95) 100%
   );
   background-size: 200% 200%;
   

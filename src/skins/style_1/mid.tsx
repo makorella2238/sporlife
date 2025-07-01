@@ -203,44 +203,12 @@ const BackgroundImage = styled.div`
   width: 100%;
   height: 100%;
   
-  background: linear-gradient(
-    135deg,
-    rgba(14, 28, 88, 0.9) 0%,
-    rgba(12, 10, 107, 0.95) 25%,
-    #00063C 50%,
-    rgba(4, 20, 87, 0.95) 75%,
-    rgba(4, 14, 58, 0.9) 100%
-  );
-  background-size: 200% 200%;
+  background: url('/Group.png') no-repeat center center / cover;
   
-  animation: ${gradientMove} 12s ease infinite alternate;
-  z-index: 1;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 180, 255, 0.1) 50%,
-      transparent 100%
-    );
-    background-size: 200% 100%;
-    animation: ${shineEffect} 8s ease infinite;
-    pointer-events: none;
-  }
-  
-  &:after {
-    content: "";
-    position: absolute;
-    top: -10px; left: -10px; right: -10px; bottom: -10px;
-    border: 2px solid rgba(0, 180, 255, 0.3);
-    border-radius: 5px;
-    animation: ${lightEffect} 6s ease infinite;
-    pointer-events: none;
-  }
-`;
+  animation: 
+    ${slideDown} 0.5s ease forwards,
+    ${gradientMove} 12s ease infinite alternate;
+`;  
 
 const Wrapper = styled.div`
   padding-top: 50px;
