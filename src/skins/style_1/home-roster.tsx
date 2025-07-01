@@ -100,6 +100,106 @@ const slideDown = keyframes`
   }
 `;
 
+
+const gradientMove = keyframes`
+  0% {
+    background-position: 0% 50%;
+    background-size: 200% 200%;
+  }
+  25% {
+    background-position: 100% 50%;
+    background-size: 250% 250%;
+  }
+  50% {
+    background-position: 50% 100%;
+    background-size: 300% 300%;
+  }
+  75% {
+    background-position: 0% 50%;
+    background-size: 250% 250%;
+  }
+  100% {
+    background-position: 100% 50%;
+    background-size: 200% 200%;
+  }
+`;
+
+const lightEffect = keyframes`
+  0%, 100% {
+    box-shadow: 0 0 80px rgba(0, 140, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 120px rgba(0, 200, 255, 0.4);
+  }
+`;
+
+const shineEffect = keyframes`
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1492px;
+  height: 809px;
+  font-family: "Furore", sans-serif;
+  color: white;
+  z-index: 1;
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    rgba(14, 28, 88, 0.9) 0%,
+    rgba(12, 10, 107, 0.95) 25%,
+    #00063C 50%,
+    rgba(4, 20, 87, 0.95) 75%,
+    rgba(4, 14, 58, 0.9) 100%
+  );
+  background-size: 200% 200%;
+  
+  animation: 
+    ${slideDown} 0.5s ease forwards,
+    ${gradientMove} 12s ease infinite alternate;
+  
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 180, 255, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: ${shineEffect} 8s ease infinite;
+    pointer-events: none;
+  }
+  
+  &:after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid rgba(0, 180, 255, 0.3);
+    border-radius: 5px;
+    animation: ${lightEffect} 6s ease infinite;
+    pointer-events: none;
+  }
+`;
+
 const Container = styled.div`
   position: absolute;
   top: 0;
@@ -109,20 +209,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  background: url("/person.png") no-repeat center center / cover;
-  width: 1492px;
-  height: 809px;
-  font-family: "Furore", sans-serif;
-  color: white;
-  position: relative;
-  animation: ${slideDown} 1s ease forwards;
 `;
 
 const Title = styled.h1`

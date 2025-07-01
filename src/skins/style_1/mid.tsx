@@ -100,6 +100,17 @@ const slideDown = keyframes`
   }
 `;
 
+const waveShift = keyframes`
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 0%;
+  }
+`;
+
+
+
 const Container = styled.div`
   position: absolute;
   top: 0;
@@ -123,13 +134,65 @@ const Wrapper = styled.div`
   animation: ${slideDown} 0.5s ease forwards;
 `;
 
+const slideInLeft = keyframes`
+  from {
+    transform: translateX(-300px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(28px);
+    opacity: 1;
+  }
+`;
+
+const slideInRight = keyframes`
+  from {
+    transform: translateX(300px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-28px);
+    opacity: 1;
+  }
+`;
+
+const fadeInCrossLeft = keyframes`
+  from {
+    transform: translate(-50px, 50px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+`;
+
+const fadeInCrossRight = keyframes`
+  from {
+    transform: translate(50px, -50px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+`;
+
+
 const BackgroundImage = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("/Group.png") no-repeat center center / cover;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    #101840 0px,
+    #1e2b64 200px,
+    #0a0f2c 400px
+  );
+  background-size: 400% 400%;
+  animation: ${waveShift} 40s linear infinite;
   z-index: 1;
 `;
 
@@ -278,6 +341,12 @@ const TeamBox = styled.div<{ side: "left" | "right", color?: string  }>`
       ? "transform: translateX(28px);"
       : "transform: translateX(-28px);"}
   z-index: 10;
+  animation: ${(props) =>
+    props.side === "left"
+      ? slideInLeft
+      : slideInRight} 0.6s ease-out forwards;
+  animation-delay: 0.2s;
+  opacity: 0; /* скрыто до появления */
 
   overflow: visible;
 `;
@@ -298,6 +367,12 @@ const TeamName = styled.div<{ side: "left" | "right"; smallFont?: boolean }>`
   text-overflow: ellipsis;
   max-height: none;
   z-index: 1;
+  animation: ${(props) =>
+    props.side === "left"
+      ? fadeInCrossRight
+      : fadeInCrossLeft} 0.6s ease-out forwards;
+  animation-delay: 1s;
+  opacity: 0;
 
   ${({ side }) =>
     side === "left"
@@ -319,11 +394,17 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   height: 263px;
   object-fit: contain;
   left: ${(props) => (props.side === "left" ? "11%" : "auto")};
-  right: ${(props) => (props.side === "right" ? "13%" : "auto")};
-  top: ${(props) => (props.side === "right" ? "-50%" : "-106%")};
+  right: ${(props) => (props.side === "right" ? "11%" : "auto")};
+  top: ${(props) => (props.side === "right" ? "30px" : "-76px")};
   :45px ;
   transform: translateY(50%);
   z-index: 20;
+  animation: ${(props) =>
+    props.side === "left"
+      ? fadeInCrossLeft
+      : fadeInCrossRight} 0.6s ease-out forwards;
+  animation-delay: 0.8s;
+  opacity: 0;
 `;
 
 const TeamSlash = styled.div<{ side: "left" | "right" }>`

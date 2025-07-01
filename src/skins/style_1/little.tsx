@@ -1,6 +1,6 @@
 "use client";
 
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from "styled-components";
 import { useMatch, useScoreboard, useScenario } from "@/hooks";
 
 const getShortName = (name?: string) => (name ? name.slice(0, 4) : "");
@@ -14,14 +14,15 @@ export const Little = ({ show }: { show: boolean }) => {
       <FuroreFont />
 
       {scoreboard.is_fouls && (
-        <FollsContainer>
-          {/* <FollsSlashLeft /> */}
+        <FollsContainer
+          visible={scoreboard.is_fouls}
+          key={scoreboard.is_fouls ? "fouls-visible" : "fouls-hidden"}
+        >
           <FollsContent>
             <FollsCount>{scoreboard?.team_1_fouls ?? 0}</FollsCount>
             <FollsText>ФОЛЫ</FollsText>
             <FollsCount>{scoreboard?.team_2_fouls ?? 0}</FollsCount>
           </FollsContent>
-          {/* <FollsSlashRight /> */}
         </FollsContainer>
       )}
 
@@ -55,6 +56,27 @@ export const Little = ({ show }: { show: boolean }) => {
   );
 };
 
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeOutLeft = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+`;
 
 const slideDown = keyframes`
   from {
@@ -93,14 +115,27 @@ const Wrapper = styled.div`
   z-index: 100;
   width: 638px;
   overflow: visible;
-   animation: ${slideDown} 0.5s ease forwards;
+  animation: ${slideDown} 0.5s ease forwards;
 `;
 
-const FollsContainer = styled.div`
+const FollsContainer = styled.div<{ visible: boolean }>`
   display: flex;
   flex-direction: row;
   margin-bottom: -10px;
   z-index: 5;
+  pointer-events: none;
+  height: auto;
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  transform-origin: left;
+
+  ${({ visible }) =>
+    visible
+      ? css`
+          animation: ${fadeInLeft} 0.4s ease forwards;
+        `
+      : css`
+          animation: ${fadeOutLeft} 0.4s ease forwards;
+        `}
 `;
 
 const FollsContent = styled.div`
@@ -147,7 +182,7 @@ const Row = styled.div`
   overflow: visible;
 `;
 
-const TeamBox = styled.div<{ side: "left" | "right", color?: string }>`
+const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
   position: relative;
   display: flex;
   flex-direction: ${(props) =>
@@ -226,14 +261,13 @@ const ScoreBox = styled.div<{ isFouls?: boolean }>`
   width: 145.55px;
   margin: 0 10px;
   position: relative;
-color: ${({ isFouls }) => (isFouls === false ? "#FFFFFF" : "#001134")};
+  color: ${({ isFouls }) => (isFouls === false ? "#FFFFFF" : "#001134")};
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 0;
   background: ${({ isFouls }) => (isFouls === false ? "#000" : "transparent")};
 `;
-
 
 const ScoreText = styled.div`
   font-family: "Furore", sans-serif;
