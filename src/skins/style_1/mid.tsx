@@ -100,16 +100,14 @@ const slideDown = keyframes`
   }
 `;
 
-const waveShift = keyframes`
-  0% {
+const stripeShift = keyframes`
+  0%, 100% {
     background-position: 0% 0%;
   }
-  100% {
-    background-position: 100% 0%;
+  50% {
+    background-position: 5% 0%;
   }
 `;
-
-
 
 const Container = styled.div`
   position: absolute;
@@ -185,14 +183,16 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: repeating-radial-gradient(
-    circle at 50% 50%,
-    #101840 0px,
-    #1e2b64 200px,
-    #0a0f2c 400px
+  background: repeating-linear-gradient(
+    45deg,
+    #101840 0,
+    #101840 20px,
+    #1e2b64 20px,
+    #1e2b64 40px,
+    #0a0f2c 60px
   );
-  background-size: 400% 400%;
-  animation: ${waveShift} 40s linear infinite;
+  background-size: 200% 100%;
+  animation: ${stripeShift} 6s ease-in-out infinite;
   z-index: 1;
 `;
 
@@ -346,9 +346,7 @@ const TeamBox = styled.div<{ side: "left" | "right", color?: string  }>`
       ? slideInLeft
       : slideInRight} 0.6s ease-out forwards;
   animation-delay: 0.2s;
-  opacity: 0; /* скрыто до появления */
-
-  overflow: visible;
+  opacity: 0;
 `;
 
 const TeamName = styled.div<{ side: "left" | "right"; smallFont?: boolean }>`
@@ -401,9 +399,9 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   z-index: 20;
   animation: ${(props) =>
     props.side === "left"
-      ? fadeInCrossLeft
-      : fadeInCrossRight} 0.6s ease-out forwards;
-  animation-delay: 0.8s;
+      ? slideInLeft
+      : slideInRight} 0.6s ease-out forwards;
+  animation-delay: 0.2s;
   opacity: 0;
 `;
 
