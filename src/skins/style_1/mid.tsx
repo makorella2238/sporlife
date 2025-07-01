@@ -100,12 +100,45 @@ const slideDown = keyframes`
   }
 `;
 
-const stripeShift = keyframes`
-  0%, 100% {
-    background-position: 0% 0%;
+const gradientMove= keyframes`
+  0% {
+    background-position: 0% 50%;
+    background-size: 150% 150%;
+  }
+  25% {
+    background-position: 50% 100%;
+    background-size: 200% 200%;
   }
   50% {
-    background-position: 5% 0%;
+    background-position: 100% 50%;
+    background-size: 150% 150%;
+  }
+  75% {
+    background-position: 50% 0%;
+    background-size: 100% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+    background-size: 150% 150%;
+  }
+`;
+
+
+const lightEffect = keyframes`
+  0%, 100% {
+    box-shadow: 0 0 80px rgba(0, 140, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 120px rgba(0, 200, 255, 0.4);
+  }
+`;
+
+const shineEffect = keyframes`
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
   }
 `;
 
@@ -118,18 +151,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Wrapper = styled.div`
-  padding-top: 50px;
-  width: 1400px;
-  height: 800px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Furore", sans-serif;
-  overflow: hidden;
-  animation: ${slideDown} 0.5s ease forwards;
 `;
 
 const slideInLeft = keyframes`
@@ -175,25 +196,63 @@ const fadeInCrossRight = keyframes`
     opacity: 1;
   }
 `;
-
-
 const BackgroundImage = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    45deg,
-    #101840 0,
-    #101840 20px,
-    #1e2b64 20px,
-    #1e2b64 40px,
-    #0a0f2c 60px
+  
+  background: linear-gradient(
+    135deg,
+    rgba(14, 28, 88, 0.9) 0%,
+    rgba(12, 10, 107, 0.95) 25%,
+    #00063C 50%,
+    rgba(4, 20, 87, 0.95) 75%,
+    rgba(4, 14, 58, 0.9) 100%
   );
-  background-size: 200% 100%;
-  animation: ${stripeShift} 6s ease-in-out infinite;
+  background-size: 200% 200%;
+  
+  animation: ${gradientMove} 12s ease infinite alternate;
   z-index: 1;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 180, 255, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: ${shineEffect} 8s ease infinite;
+    pointer-events: none;
+  }
+  
+  &:after {
+    content: "";
+    position: absolute;
+    top: -10px; left: -10px; right: -10px; bottom: -10px;
+    border: 2px solid rgba(0, 180, 255, 0.3);
+    border-radius: 5px;
+    animation: ${lightEffect} 6s ease infinite;
+    pointer-events: none;
+  }
+`;
+
+const Wrapper = styled.div`
+  padding-top: 50px;
+  width: 1400px;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Furore", sans-serif;
+  overflow: hidden;
+  animation: ${slideDown} 0.5s ease forwards;
+  position: relative; /* чтобы ::before и ::after работали в BackgroundImage */
 `;
 
 const TitleContainer = styled.div`
