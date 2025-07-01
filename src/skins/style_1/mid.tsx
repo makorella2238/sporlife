@@ -207,7 +207,7 @@ const BackgroundImage = styled.div`
   
   animation: 
     ${slideDown} 0.5s ease forwards,
-    ${gradientMove} 12s ease infinite alternate;
+    ${gradientMove} 20s ease infinite alternate;
 `;  
 
 const Wrapper = styled.div`
